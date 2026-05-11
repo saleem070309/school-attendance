@@ -1,7 +1,7 @@
 import os
 import shutil
 import tkinter as tk
-from tkinter import messagebox, ttk
+from tkinter import messagebox, ttk, filedialog
 import threading
 import time
 from datetime import datetime
@@ -10,13 +10,13 @@ class BackupApp:
     def __init__(self, root):
         self.root = root
         self.root.title("أداة النسخ الاحتياطي التلقائي")
-        self.root.geometry("450x350")
+        self.root.geometry("450x450")
         self.root.configure(bg="#f0f2f5")
         
         # تحديد المسارات تلقائياً بناءً على مكان ملف السكربت
         script_dir = os.path.dirname(os.path.abspath(__file__))
         self.source_path = script_dir
-        self.dest_path = os.path.join(os.path.dirname(script_dir), os.path.basename(script_dir) + " - Copy")
+        self.dest_path = os.path.join(os.path.dirname(script_dir), os.path.basename(script_dir) + " backup")
         
         self.is_scheduled = False
         self.scheduler_thread = None
@@ -31,9 +31,27 @@ class BackupApp:
         style.configure("TButton", font=("Segoe UI", 10), padding=5)
         
         main_frame = tk.Frame(self.root, bg="#ffffff", padx=20, pady=20, relief="flat")
-        main_frame.place(relx=0.5, rely=0.5, anchor="center", width=400, height=300)
+        main_frame.place(relx=0.5, rely=0.5, anchor="center", width=400, height=400)
         
         tk.Label(main_frame, text="نظام النسخ الاحتياطي", font=("Segoe UI", 16, "bold"), bg="#ffffff", fg="#1a73e8").pack(pady=10)
+        
+        # قسم اختيار المسار
+        path_frame = tk.Frame(main_frame, bg="#ffffff")
+        path_frame.pack(pady=10, fill="x")
+        
+        tk.Label(path_frame, text="مسار النسخ الاحتياطي:", font=("Segoe UI", 9), bg="#ffffff").pack(anchor="e")
+        
+        entry_frame = tk.Frame(path_frame, bg="#ffffff")
+        entry_frame.pack(fill="x")
+        
+        self.dest_entry = tk.Entry(entry_frame, font=("Segoe UI", 9))
+        self.dest_entry.insert(0, self.dest_path)
+        self.dest_entry.pack(side="right", fill="x", expand=True, padx=(5, 0))
+        
+        self.btn_browse = tk.Button(entry_frame, text="تغيير", command=self.browse_dest,
+                                     bg="#5f6368", fg="white", font=("Segoe UI", 8), 
+                                     relief="flat", cursor="hand2")
+        self.btn_browse.pack(side="right")
         
         # زر الحفظ الآن
         self.btn_now = tk.Button(main_frame, text="الحفظ الآن", command=self.manual_backup, 
@@ -65,13 +83,25 @@ class BackupApp:
 
     def perform_backup(self):
         try:
+            # تحديث المسار من المدخلات
+            self.dest_path = self.dest_entry.get()
+            
             if not os.path.exists(self.source_path):
                 return False, "المجلد المصدري غير موجود!"
 
-            # استخدام dirs_exist_ok لجعل النسخ أكثر مرونة مع المجلدات الموجودة مسبقاً
-            # هذا يتطلب Python 3.8+
+            # منع النسخ اللانهائي إذا كان المجلد الهدف داخل المجلد المصدري
+            ignore_list = ['*.pyc', '__pycache__', '.git']
+            abs_source = os.path.abspath(self.source_path)
+            abs_dest = os.path.abspath(self.dest_path)
+            
+            if abs_dest.startswith(abs_source):
+                # استخراج اسم المجلد النسبي إذا كان بالداخل
+                rel_dest = os.path.relpath(abs_dest, abs_source)
+                dest_root = rel_dest.split(os.sep)[0]
+                ignore_list.append(dest_root)
+
             shutil.copytree(self.source_path, self.dest_path, dirs_exist_ok=True, 
-                            ignore=shutil.ignore_patterns('*.pyc', '__pycache__', '.git'))
+                            ignore=shutil.ignore_patterns(*ignore_list))
             
             return True, f"تم النسخ بنجاح في {datetime.now().strftime('%H:%M:%S')}"
         except Exception as e:
@@ -124,6 +154,13 @@ class BackupApp:
             for _ in range(int(minutes * 60)):
                 if not self.is_scheduled: break
                 time.sleep(1)
+
+    def browse_dest(self):
+        directory = filedialog.askdirectory(initialdir=os.path.dirname(self.dest_path))
+        if directory:
+            self.dest_entry.delete(0, tk.END)
+            self.dest_entry.insert(0, directory)
+            self.dest_path = directory
 
 if __name__ == "__main__":
     root = tk.Tk()
