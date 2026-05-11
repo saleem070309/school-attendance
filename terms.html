@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>شروط الاستخدام وحقوق الملكية | حضوري</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <link href="styles/style.css" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ffab31",
+                        "on-primary": "#1b1b1b",
+                        "background": "#faf7f2",
+                        "surface": "#ffffff"
+                    },
+                    fontFamily: {
+                        sans: ['Tajawal', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: var(--color-cream);
+            overflow-x: hidden;
+        }
+
+        .animate-fade-in {
+            animation: fade-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col items-center justify-center py-12 px-4 sm:px-6 text-gray-800 font-sans">
+    <!-- Ambient Background -->
+    <div class="liquid-glass-ambient">
+        <div class="orb orb-primary"></div>
+        <div class="orb orb-tertiary"></div>
+        <div class="orb orb-accent"></div>
+    </div>
+
+    <div class="w-full max-w-2xl animate-fade-in relative z-10">
+        <div class="liquid-glass liquid-glass-prominent p-8 sm:p-12 rounded-3xl space-y-8">
+            <!-- Header -->
+            <div class="text-center space-y-4">
+                <div
+                    class="liquid-glass-icon icon-primary w-16 h-16 rounded-2xl mx-auto border border-primary/20 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-3xl text-on-primary">gavel</span>
+                </div>
+                <h1 class="text-3xl font-bold refractive-text">شروط الاستخدام وحقوق الملكية</h1>
+            </div>
+
+            <!-- Content -->
+            <div class="space-y-6 text-lg leading-relaxed text-gray-700">
+                <section class="space-y-3">
+                    <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">copyright</span>
+                        حقوق الطبع والنشر
+                    </h2>
+                    <p>
+                        © 2026 حضوري — Hodoori. جميع الحقوق محفوظة.
+                    </p>
+                    <p class="bg-primary/5 p-4 rounded-xl border border-primary/10">
+                        تم تطوير هذا التطبيق بواسطة فريق حضوري. يمنع نسخ أو تعديل أو إعادة نشر أو بيع أو استخدام أي جزء من التطبيق أو التصميم أو الكود أو الشعار أو قاعدة البيانات دون إذن خطي مسبق من مالك المشروع.
+                    </p>
+                </section>
+
+                <section class="space-y-3 pt-4 border-t border-gray-100">
+                    <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">verified_user</span>
+                        حماية الملكية الفكرية
+                    </h2>
+                    <p>
+                        تطبيق حضوري هو مشروع تقني مملوك لفريق حضوري. جميع التصاميم والواجهات والكود والشعار وآلية العمل محمية ولا يجوز استخدامها أو نسخها أو إعادة إنتاجها دون موافقة خطية مسبقة من الفريق.
+                    </p>
+                </section>
+                
+                <div class="pt-8 text-center">
+                    <a href="index.html" class="liquid-button inline-flex items-center gap-2 px-8 py-3 rounded-xl font-bold text-on-primary">
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                        العودة للرئيسية
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="mt-8 text-center text-sm text-gray-500">
+            &copy; 2026 حضوري — جميع الحقوق محفوظة.
+        </footer>
+    </div>
+</body>
+
+</html>
